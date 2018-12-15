@@ -1,14 +1,41 @@
 ---
 title: "R Data Science Chapter 1"
 author: "Shaun Jackson"
-output: html_document:
-  keep_md: true
+output: 
+  rmarkdown::github_document:
+    toc: true
+    toc_depth: 2
 ---
 
 The below notes are from Hadley Wickham's R for Data Science. This is a summary of my main takeaways from the sections that I thought were the most important
 
 # Data visualisation
 
+- The section of the book teaches us how to use ggplot2. In order to make sure all the required packages are available:
 
- 
+```{r message=F, warning=F}
+library(tidyverse)
+```
 
+## Data we are working with
+
+We are using the **mpg** dataframe that is found within ggplot2.
+```{r}
+mpg
+```
+
+- Note: mpg is a tibble. Tibbles are 
+
+> "a modern reimagining of the data.frame." "Tibbles are data.frames that are lazy and surly: they do less" "and complain more." - from https://tibble.tidyverse.org 
+
+## Plotting `mpg` by putting `displ` on the x-axis and `hwy` on the y-axis:
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+In the above plot,
+
+- `geom_point()` produces points on the graph.
+- Define x and y axes by setting the x and y parameters within the aesthetic function `aes()` to `x = displ` and `y = hwy`.
