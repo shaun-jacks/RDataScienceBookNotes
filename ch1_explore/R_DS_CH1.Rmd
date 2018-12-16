@@ -7,35 +7,76 @@ output:
     toc_depth: 2
 ---
 
-The below notes are from Hadley Wickham's R for Data Science. This is a summary of my main takeaways from the sections that I thought were the most important
+The below notes are from Hadley Wickham's R for Data Science. 
 
-# Data visualisation
+My Notes are organized as follows:
 
-- The section of the book teaches us how to use ggplot2. In order to make sure all the required packages are available:
+1. Exercise Solutions
 
-```{r message=F, warning=F}
+2. Summary of the chapter and my main takeaways
+
+# Prerequisites
+
+To start, we must make sure we have the **tidyverse** package loaded into our environment.
+
+```{r, message=F}
 library(tidyverse)
 ```
 
-## Data we are working with
+Loading the tidyverse package will provide us with `mpg`, a tibble that will enable our analyses.
 
-We are using the **mpg** dataframe that is found within ggplot2.
-```{r}
-mpg
-```
 
-- Note: mpg is a tibble. Tibbles are 
+# 3.2.4 Exercise Solutions
 
-> "a modern reimagining of the data.frame." "Tibbles are data.frames that are lazy and surly: they do less" "and complain more." - from https://tibble.tidyverse.org 
+1. Run `ggplot(data = mpg)`. What do you see?
 
-## Plotting `mpg` by putting `displ` on the x-axis and `hwy` on the y-axis:
+    + Running `ggplot(data = mpg)` produces not output that I can see. It looks like a blank graph.
 
-```{r}
+2. How many rows are in `mpg`? How many columns?
+
+    + There are `r nrow(mpg) ` rows and `r ncol(mpg)` columns. (Used `nrow()` and `ncol()`).
+
+3. What does the `drv` variable describe? 
+
+    + After `?mpg`, the values "f = front-wheel drive, r = rear wheel drive, 4 = 4wd". They describe a way to group the cars.
+
+4. Make a scatterplot of `hwy` vs `cyl`.
+
+    ```{r}
+ggplot(mpg, aes(x = hwy, y = cyl)) + geom_point()
+    ```
+
+5. What happens if you make a scatterplot? Why is the plot not useful?
+
+    + The plot is not useful because the scales of the coordinate axes and the points do not have any clear correlations.
+
+# 3.3.1 Exercise
+
+1. What's gone wrong with this code? Why are points not blue?
+    ```{r}
 ggplot(data = mpg) +
-  geom_point(mapping = aes(x = displ, y = hwy))
-```
+      geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+    ```
 
-In the above plot,
+    + The above code does not change the appearance of the plot. Instead, it changes the aesthetics layer of ggplot. To be more clear, the **value** of blue is assigned to all rows in the dataset, and being plotted with that characteristic. The appearance of the plot is not changed, the data is being processed, grouping all variables in the plot with a value of blue. In order to change the appearance, the data must **first** be plotted, and then the color can be assigned *outside* of the `aes()` function.
+    
+2. Which variables in `mpg` are categorical? Which variables are continuous?
 
-- `geom_point()` produces points on the graph.
-- Define x and y axes by setting the x and y parameters within the aesthetic function `aes()` to `x = displ` and `y = hwy`.
+    + The categorical variables in `mpg` are `model`, `year`, `cyl`, `trans`, `drv`, `fl`, and `class`. 
+  
+3. Map a continuous variable to `color`, `size`, and `shape`. How do these aesthetics behave differently for categorical vs. continuous variables?
+
+    ```{r}
+ggplot(mpg) + geom_point(aes(x = displ, y = hwy, color = cty))
+ggplot(mpg) + geom_point(aes(x = displ, y = hwy, size = cty))
+    ```
+
+    + inputting a continuous variable for `color` and `size` causes `ggplot` to define a *spectrum* of possible layers of colors and sizes. This is shown in the added legend of the graph.
+    + inputting a continuous variable for `shape` causes an error since there is no spectrum of shapes that can satisfy the amount of values in a continuous variable
+
+4. What happens if you map the same variable to multiple aesthetics?
+
+5. What does the `stroke` aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+
+6. What happens if you map an aesthetic to something other than a variable name, like `aes(colour = displ < 5)`? Note, you’ll also need to specify x and y.
+

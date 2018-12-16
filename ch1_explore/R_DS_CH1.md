@@ -2,60 +2,93 @@ R Data Science Chapter 1
 ================
 Shaun Jackson
 
--   [Data visualisation](#data-visualisation)
-    -   [Data we are working with](#data-we-are-working-with)
-    -   [Plotting `mpg` by putting `displ` on the x-axis and `hwy` on the y-axis:](#plotting-mpg-by-putting-displ-on-the-x-axis-and-hwy-on-the-y-axis)
+-   [Prerequisites](#prerequisites)
+-   [3.2.4 Exercise Solutions](#exercise-solutions)
+-   [3.3.1 Exercise](#exercise)
 
-The below notes are from Hadley Wickham's R for Data Science. This is a summary of my main takeaways from the sections that I thought were the most important
+The below notes are from Hadley Wickham's R for Data Science.
 
-Data visualisation
-==================
+My Notes are organized as follows:
 
--   The section of the book teaches us how to use ggplot2. In order to make sure all the required packages are available:
+1.  Exercise Solutions
+
+2.  Summary of the chapter and my main takeaways
+
+Prerequisites
+=============
+
+To start, we must make sure we have the **tidyverse** package loaded into our environment.
 
 ``` r
 library(tidyverse)
 ```
 
-Data we are working with
-------------------------
+Loading the tidyverse package will provide us with `mpg`, a tibble that will enable our analyses.
 
-We are using the **mpg** dataframe that is found within ggplot2.
+3.2.4 Exercise Solutions
+========================
 
-``` r
-mpg
-```
+1.  Run `ggplot(data = mpg)`. What do you see?
 
-    ## # A tibble: 234 x 11
-    ##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    cla…
-    ##    <chr>        <chr> <dbl> <int> <int> <chr> <chr> <int> <int> <chr> <ch>
-    ##  1 audi         a4      1.8  1999     4 auto… f        18    29 p     com…
-    ##  2 audi         a4      1.8  1999     4 manu… f        21    29 p     com…
-    ##  3 audi         a4      2    2008     4 manu… f        20    31 p     com…
-    ##  4 audi         a4      2    2008     4 auto… f        21    30 p     com…
-    ##  5 audi         a4      2.8  1999     6 auto… f        16    26 p     com…
-    ##  6 audi         a4      2.8  1999     6 manu… f        18    26 p     com…
-    ##  7 audi         a4      3.1  2008     6 auto… f        18    27 p     com…
-    ##  8 audi         a4 q…   1.8  1999     4 manu… 4        18    26 p     com…
-    ##  9 audi         a4 q…   1.8  1999     4 auto… 4        16    25 p     com…
-    ## 10 audi         a4 q…   2    2008     4 manu… 4        20    28 p     com…
-    ## # ... with 224 more rows
+    -   Running `ggplot(data = mpg)` produces not output that I can see. It looks like a blank graph.
 
--   Note: mpg is a tibble. Tibbles are
+2.  How many rows are in `mpg`? How many columns?
 
-> "a modern reimagining of the data.frame." "Tibbles are data.frames that are lazy and surly: they do less" "and complain more." - from <https://tibble.tidyverse.org>
+    -   There are 234 rows and 11 columns. (Used `nrow()` and `ncol()`).
 
-Plotting `mpg` by putting `displ` on the x-axis and `hwy` on the y-axis:
-------------------------------------------------------------------------
+3.  What does the `drv` variable describe?
 
-``` r
-ggplot(data = mpg) +
-  geom_point(mapping = aes(x = displ, y = hwy))
-```
+    -   After `?mpg`, the values "f = front-wheel drive, r = rear wheel drive, 4 = 4wd". They describe a way to group the cars.
 
-![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-3-1.png)
+4.  Make a scatterplot of `hwy` vs `cyl`.
 
-In the above plot,
+    ``` r
+    ggplot(mpg, aes(x = hwy, y = cyl)) + geom_point()
+    ```
 
--   `geom_point()` produces points on the graph.
--   Define x and y axes by setting the x and y parameters within the aesthetic function `aes()` to `x = displ` and `y = hwy`.
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+5.  What happens if you make a scatterplot? Why is the plot not useful?
+
+    -   The plot is not useful because the scales of the coordinate axes and the points do not have any clear correlations.
+
+3.3.1 Exercise
+==============
+
+1.  What's gone wrong with this code? Why are points not blue?
+
+    ``` r
+    ggplot(data = mpg) +
+      geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-3-1.png)
+
+    -   The above code does not change the appearance of the plot. Instead, it changes the aesthetics layer of ggplot. To be more clear, the **value** of blue is assigned to all rows in the dataset, and being plotted with that characteristic. The appearance of the plot is not changed, the data is being processed, grouping all variables in the plot with a value of blue. In order to change the appearance, the data must **first** be plotted, and then the color can be assigned *outside* of the `aes()` function.
+
+2.  Which variables in `mpg` are categorical? Which variables are continuous?
+
+    -   The categorical variables in `mpg` are `model`, `year`, `cyl`, `trans`, `drv`, `fl`, and `class`.
+
+3.  Map a continuous variable to `color`, `size`, and `shape`. How do these aesthetics behave differently for categorical vs. continuous variables?
+
+    ``` r
+    ggplot(mpg) + geom_point(aes(x = displ, y = hwy, color = cty))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-4-1.png)
+
+    ``` r
+    ggplot(mpg) + geom_point(aes(x = displ, y = hwy, size = cty))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-4-2.png)
+
+    -   inputting a continuous variable for `color` and `size` causes `ggplot` to define a *spectrum* of possible layers of colors and sizes. This is shown in the added legend of the graph.
+    -   inputting a continuous variable for `shape` causes an error since there is no spectrum of shapes that can satisfy the amount of values in a continuous variable
+
+4.  What happens if you map the same variable to multiple aesthetics?
+
+5.  What does the `stroke` aesthetic do? What shapes does it work with? (Hint: use ?geom\_point)
+
+6.  What happens if you map an aesthetic to something other than a variable name, like `aes(colour = displ < 5)`? Note, you’ll also need to specify x and y.
