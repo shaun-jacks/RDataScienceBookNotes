@@ -50,7 +50,7 @@ ggplot(mpg, aes(x = hwy, y = cyl)) + geom_point()
 
     + The plot is not useful because the scales of the coordinate axes and the points do not have any clear correlations.
 
-# 3.3.1 Exercise
+# 3.3.1 Exercise Solutions
 
 1. What's gone wrong with this code? Why are points not blue?
     ```{r}
@@ -76,7 +76,80 @@ ggplot(mpg) + geom_point(aes(x = displ, y = hwy, size = cty))
 
 4. What happens if you map the same variable to multiple aesthetics?
 
+    ```{r}
+    ggplot(mpg) + geom_point(aes(x = displ, y = displ, color = displ))
+    ```
+
+    + ggplot will plot  a graph with a slope of 1 since all variables have a 100% correlation.
+
 5. What does the `stroke` aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+
+    + The stroke aesthetic helps degine the colour and fill in a ggplot.
+
 
 6. What happens if you map an aesthetic to something other than a variable name, like `aes(colour = displ < 5)`? Note, you’ll also need to specify x and y.
 
+    ```{r}
+    ggplot(mpg) + geom_point(aes(x = displ, y = hwy, color = displ < 5))
+    ```
+
+
+# 3.5.1 Exercise Solutions
+
+1. What happens if you facet on a continuous variable?
+
+    ```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ cty)
+    ```
+
+    + ggplot will make subplots for every value the continuous variable has
+    
+
+2. What do the empty cells in plot with facet_grid(drv ~ cyl) mean? How do they relate to this plot?
+
+    ```{r}
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = drv, y = cyl))
+    ```
+
+
+    + The empty cells mean that there is no value for drv or cyl that exist for either variables within the facet_grid.
+    + For the above plot, there is no point for the combination of drv and cyl in which an empty cell within the facet_grid exists
+
+
+3. What plots does the following code make? What does . do?
+
+    ```{r}
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) +
+        facet_grid(drv ~ .)
+
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) +
+        facet_grid(. ~ cyl)
+    ```
+    
+    + The code above separates each facet within the grid individualling, in either row or column format. Depending on where the dot is, it will define if the subplots will be shown in row form, or in column form.
+
+4. Take the first faceted plot in this section:
+
+    ```{r, echo=F, message=F}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+    ```
+
+    + What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+
+    + The advantages are that you can more clearly distinguish what the subgroups are within a dataset, since there is a separate plot for each subgroup. A disadavantage could be that it would be harder to see the differences within a plot since the datapoints are in separate graphs. Faceting could me more advantageous than distinguishing by color with a larger dataset because this could dampen the effects of overplotting.
+
+5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol arguments?
+
+    + nrow and ncol allow you to control the number of rows and columns on the ouput after facetting
+
+6. When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?
+
+    + Putting the variable with more unique levels in the columns allows one to more easily see the differences between changes from left to right, instead of from top to bottom.
+    

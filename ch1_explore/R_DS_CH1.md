@@ -4,7 +4,8 @@ Shaun Jackson
 
 -   [Prerequisites](#prerequisites)
 -   [3.2.4 Exercise Solutions](#exercise-solutions)
--   [3.3.1 Exercise](#exercise)
+-   [3.3.1 Exercise Solutions](#exercise-solutions-1)
+-   [3.5.1 Exercise Solutions](#exercise-solutions-2)
 
 The below notes are from Hadley Wickham's R for Data Science.
 
@@ -52,8 +53,8 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     -   The plot is not useful because the scales of the coordinate axes and the points do not have any clear correlations.
 
-3.3.1 Exercise
-==============
+3.3.1 Exercise Solutions
+========================
 
 1.  What's gone wrong with this code? Why are points not blue?
 
@@ -89,6 +90,85 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
 4.  What happens if you map the same variable to multiple aesthetics?
 
+    ``` r
+    ggplot(mpg) + geom_point(aes(x = displ, y = displ, color = displ))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-5-1.png)
+
+    -   ggplot will plot a graph with a slope of 1 since all variables have a 100% correlation.
+
 5.  What does the `stroke` aesthetic do? What shapes does it work with? (Hint: use ?geom\_point)
 
+    -   The stroke aesthetic helps degine the colour and fill in a ggplot.
+
 6.  What happens if you map an aesthetic to something other than a variable name, like `aes(colour = displ < 5)`? Note, you’ll also need to specify x and y.
+
+    ``` r
+    ggplot(mpg) + geom_point(aes(x = displ, y = hwy, color = displ < 5))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+3.5.1 Exercise Solutions
+========================
+
+1.  What happens if you facet on a continuous variable?
+
+    ``` r
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) + 
+      facet_wrap(~ cty)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-7-1.png)
+
+    -   ggplot will make subplots for every value the continuous variable has
+
+2.  What do the empty cells in plot with facet\_grid(drv ~ cyl) mean? How do they relate to this plot?
+
+    ``` r
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = drv, y = cyl))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-8-1.png)
+
+    -   The empty cells mean that there is no value for drv or cyl that exist for either variables within the facet\_grid.
+    -   For the above plot, there is no point for the combination of drv and cyl in which an empty cell within the facet\_grid exists
+
+3.  What plots does the following code make? What does . do?
+
+    ``` r
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) +
+        facet_grid(drv ~ .)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+    ``` r
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) +
+        facet_grid(. ~ cyl)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-9-2.png)
+
+    -   The code above separates each facet within the grid individualling, in either row or column format. Depending on where the dot is, it will define if the subplots will be shown in row form, or in column form.
+
+4.  Take the first faceted plot in this section:
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-10-1.png)
+
+    -   What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+
+    -   The advantages are that you can more clearly distinguish what the subgroups are within a dataset, since there is a separate plot for each subgroup. A disadavantage could be that it would be harder to see the differences within a plot since the datapoints are in separate graphs. Faceting could me more advantageous than distinguishing by color with a larger dataset because this could dampen the effects of overplotting.
+
+5.  Read ?facet\_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet\_grid() have nrow and ncol arguments?
+
+    -   nrow and ncol allow you to control the number of rows and columns on the ouput after facetting
+
+6.  When using facet\_grid() you should usually put the variable with more unique levels in the columns. Why?
+
+    -   Putting the variable with more unique levels in the columns allows one to more easily see the differences between changes from left to right, instead of from top to bottom.
