@@ -331,10 +331,88 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-15-2.png)
 
-    -   Running `?geom_bar`, &gt; Geom\_bar() makes the height of the bar proportional to the number of cases in each group.
+    -   Running `?geom_bar`,
+        -   "Geom\_bar() makes the height of the bar proportional to the number of cases in each group.""
     -   Therefore, every group (fair, good, etc., is its own group. So, 100% of the cases are being counted.) For example, for the group "Fair", say there were 35 cases with Fair. The bar plot is plotting 35/35 cases, that is why the proportion is at 100%. By setting the group = 1, it will sum the total of all "Fair", "Good", etc. and divide each individual group by the total.
 
 3.8.1 Exercise Solutions
 ========================
 
-1.
+1.  What is the problem with this plot? How could you improve it?
+
+    ``` r
+    ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+      geom_point()
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-16-1.png)
+
+    -   There is some overplotting in the above plot. Using `jitter` will fix this.
+
+    ``` r
+    ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+      geom_point(position = "jitter")
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-17-1.png)
+
+2.  What parameters to geom\_jitter() control the amount of jittering?
+
+    -   `?geom_jitter` points out that the width and height parameters control the ammount of jittering.
+
+3.  Compare and contrast geom\_jitter() with geom\_count().
+
+    -   geom\_point counts the number of observations at each location and then maps this count to the point area whereas geom\_jitter adds randomness to each point in order to help visualize overplotted data.
+
+4.  What’s the default position adjustment for geom\_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.
+
+    -   The default position adjustment is "dodge2".
+
+    ``` r
+    ggplot(mpg, aes(x = trans)) + geom_boxplot(aes(y = hwy))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-18-1.png)
+
+    ``` r
+    bar <- ggplot(data = mpg) + 
+      geom_bar(
+      mapping = aes(x = cyl, fill = cyl), 
+      show.legend = FALSE,
+      width = .5
+      ) + 
+        theme(aspect.ratio = 1) +
+          labs(x = NULL, y = NULL)
+    bar + coord_cartesian()
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-19-1.png)
+
+    ``` r
+    bar + coord_polar()
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-19-2.png)
+
+5.  What does `labs()` do? Read the documentation.
+
+    -   It allows one to modify the axis, legend and plot labels within ggplot2
+
+6.  What’s the difference between coord\_quickmap() and coord\_map()?
+
+    -   Run `?coord_map` to see answer.
+
+7.  What does the plot below tell you about the relationship between city and highway mpg? Why is coord\_fixed() important? What does geom\_abline() do?
+
+    ``` r
+    ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+      geom_point() + 
+      geom_abline() +
+      coord_fixed()
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-20-1.png)
+
+    -   As cty increases, mpg also increases. Coord\_fixed "forces a specified ratio between the physical representation of data units on the axes" - `?coord_fixed`
+
+    -   geom\_abline addes a reference line to a plot.
