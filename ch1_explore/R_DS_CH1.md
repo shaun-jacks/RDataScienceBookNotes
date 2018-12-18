@@ -6,8 +6,13 @@ Shaun Jackson
 -   [3.2.4 Exercise Solutions](#exercise-solutions)
 -   [3.3.1 Exercise Solutions](#exercise-solutions-1)
 -   [3.5.1 Exercise Solutions](#exercise-solutions-2)
+-   [3.6.1 Exercise Solutions](#exercise-solutions-3)
+-   [3.7.1 Exercise Solutions](#exercise-solutions-4)
+-   [3.8.1 Exercise Solutions](#exercise-solutions-5)
 
 The below notes are from Hadley Wickham's R for Data Science.
+
+All numbered exercises are from the book.
 
 My Notes are organized as follows:
 
@@ -159,6 +164,12 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
 4.  Take the first faceted plot in this section:
 
+    ``` r
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) + 
+      facet_wrap(~ class, nrow = 2)
+    ```
+
     ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
     -   What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
@@ -172,3 +183,158 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 6.  When using facet\_grid() you should usually put the variable with more unique levels in the columns. Why?
 
     -   Putting the variable with more unique levels in the columns allows one to more easily see the differences between changes from left to right, instead of from top to bottom.
+
+3.6.1 Exercise Solutions
+========================
+
+1.  What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+
+    -   I would use `geom_line(), geom_boxplot(), geom_histogram(), and geom_area()` for the above types of plots.
+
+2.  Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.
+
+    ``` r
+    ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+      geom_point() + 
+        geom_smooth(se = FALSE)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-11-1.png)
+
+    -   Prediction: The output will provide a plot with both data points and a smooth line. The color of the data points / the line will be dependent on the value of drv.
+
+    ``` r
+    ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+      geom_point() + 
+        geom_smooth(se = FALSE)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-12-1.png)
+
+3.  What does show.legend = FALSE do? What happens if you remove it? Why do you think I used it earlier in the chapter?
+
+    -   `show.legend=FALSE` causes ggplot to not show a legend on the graph. It was used earlier in the chapter in order to make the plots appear more clean.
+
+4.  What does thev`se` argument to `geom_smooth()` do?
+
+    -   It allows the user to choose whether or not they want to display the confidence interval around smooth.
+
+5.  Will these two graphs look different? Why/why not?
+
+    -   The two graphs will not look different because the first graph sets the global options as shown in the second graph.
+
+6.  Recreate the R code necessary to generate the following graphs.
+
+    ``` r
+    ggplot(mpg, aes(x = displ, y = hwy)) + 
+      geom_point(size = 4) +
+        geom_smooth(se = FALSE)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-13-1.png)
+
+    ``` r
+    ggplot(mpg, aes(x = displ, y = hwy, group = drv)) + 
+      geom_point(size = 4) +
+        geom_smooth(se = FALSE)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-13-2.png)
+
+    ``` r
+     ggplot(mpg, aes(x = displ, y = hwy, color = drv)) + 
+      geom_point(size = 4) +
+        geom_smooth(se = FALSE, size = 2)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-13-3.png)
+
+    ``` r
+     ggplot(mpg, aes(x = displ, y = hwy)) + 
+      geom_point(size = 3, aes(color = drv)) +
+        geom_smooth(se = FALSE, size = 2)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-13-4.png)
+
+    ``` r
+     ggplot(mpg, aes(x = displ, y = hwy)) + 
+      geom_point(size = 3, aes(color = drv)) +
+        geom_smooth(se = FALSE, size = 1, aes(linetype = drv))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-13-5.png)
+
+    ``` r
+     ggplot(mpg, aes(x = displ, y = hwy)) + 
+      geom_point(size = 4, color = "white") +
+       geom_point(aes(colour = drv))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-13-6.png)
+
+    -   The last one was tricky, but I forgot that you could add two geom\_points().
+
+3.7.1 Exercise Solutions
+========================
+
+1.  What is the default geom associated with stat\_summary()? How could you rewrite the previous plot to use that geom function instead of the stat function?
+
+    -   The default geom is "pointrange". You could rewrite it as
+
+    ``` r
+    ggplot(diamonds) +
+      geom_pointrange(mapping = aes(x = cut, y = depth), 
+                      stat = "summary",
+                      fun.ymin = min,
+                      fun.ymax = max,
+                      fun.y = median)
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-14-1.png)
+
+    -   By changing the default stat to summary, it replicates the plot of stat\_summary() since stat\_summary has a default geom of geom\_pointrange().
+
+2.  What does geom\_col() do? How is it different to geom\_bar()?
+
+    -   Running `?geom_col`, it appears that geom\_col uses `stat_identity()` as default whereas `geom_bar()` uses `stat_count()` as default. So, `geom_col` does not add in a count variable, it maps an x value to a y value that already exists in the dataframe.
+
+3.  Most geoms and stats come in pairs that are almost always used in concert. Read through the documentation and make a list of all the pairs. What do they have in common?
+
+    1.  `stat_bin` to `geom_freqpoly`
+    2.  `stat_bin2d` to `geom_bind2d`
+    3.  `stat_binhex` to `geom_hex`
+    4.  `stat_boxplot` to `geom_boxplot`
+    5.  `stat_smooth` to `geom_smooth`
+
+    -   Still need to reference all pairs (there are a ton)
+
+    -   What they have in common are that they both have similar names, one starts with stat, and the other starts with geom, ending with what they do. Still need to research more on this.
+
+4.  What variables does stat\_smooth() compute? What parameters control its behaviour?
+
+    -   It uses the same arguments as `geom_smooth`. A list of parameters that control its behavior can be found with `?stat_smooth`.
+
+5.  In our proportion bar chart, we need to set group = 1. Why? In other words what is the problem with these two graphs?
+
+    ``` r
+    ggplot(data = diamonds) + 
+      geom_bar(mapping = aes(x = cut, y = ..prop..))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-15-1.png)
+
+    ``` r
+    ggplot(data = diamonds) + 
+      geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..))
+    ```
+
+    ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-15-2.png)
+
+    -   Running `?geom_bar`, &gt; Geom\_bar() makes the height of the bar proportional to the number of cases in each group.
+    -   Therefore, every group (fair, good, etc., is its own group. So, 100% of the cases are being counted.) For example, for the group "Fair", say there were 35 cases with Fair. The bar plot is plotting 35/35 cases, that is why the proportion is at 100%. By setting the group = 1, it will sum the total of all "Fair", "Good", etc. and divide each individual group by the total.
+
+3.8.1 Exercise Solutions
+========================
+
+1.
