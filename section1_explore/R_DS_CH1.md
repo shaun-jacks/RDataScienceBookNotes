@@ -1,14 +1,15 @@
-R Data Science Chapter 1
+R Data Science Section 1
 ================
 Shaun Jackson
 
 -   [Prerequisites](#prerequisites)
--   [3.2.4 Exercise Solutions](#exercise-solutions)
--   [3.3.1 Exercise Solutions](#exercise-solutions-1)
--   [3.5.1 Exercise Solutions](#exercise-solutions-2)
--   [3.6.1 Exercise Solutions](#exercise-solutions-3)
--   [3.7.1 Exercise Solutions](#exercise-solutions-4)
--   [3.8.1 Exercise Solutions](#exercise-solutions-5)
+-   [Chapter 3.2.4 Exercise Solutions](#chapter-3.2.4-exercise-solutions)
+-   [Chapter 3.3.1 Exercise Solutions](#chapter-3.3.1-exercise-solutions)
+-   [Chapter 3.5.1 Exercise Solutions](#chapter-3.5.1-exercise-solutions)
+-   [Chapter 3.6.1 Exercise Solutions](#chapter-3.6.1-exercise-solutions)
+-   [Chapter 3.7.1 Exercise Solutions](#chapter-3.7.1-exercise-solutions)
+-   [Chapter 3.8.1 Exercise Solutions](#chapter-3.8.1-exercise-solutions)
+-   [Chapter 3.9.1 Exercise Solutions](#chapter-3.9.1-exercise-solutions)
 -   [Thoughts of Chapter](#thoughts-of-chapter)
 
 The below notes are from Hadley Wickham's R for Data Science.
@@ -32,8 +33,8 @@ library(tidyverse)
 
 Loading the tidyverse package will provide us with `mpg`, a tibble that will enable our analyses.
 
-3.2.4 Exercise Solutions
-========================
+Chapter 3.2.4 Exercise Solutions
+================================
 
 1.  Run `ggplot(data = mpg)`. What do you see?
 
@@ -59,8 +60,8 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     -   The plot is not useful because the scales of the coordinate axes and the points do not have any clear correlations.
 
-3.3.1 Exercise Solutions
-========================
+Chapter 3.3.1 Exercise Solutions
+================================
 
 1.  What's gone wrong with this code? Why are points not blue?
 
@@ -116,8 +117,8 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
-3.5.1 Exercise Solutions
-========================
+Chapter 3.5.1 Exercise Solutions
+================================
 
 1.  What happens if you facet on a continuous variable?
 
@@ -185,8 +186,8 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     -   Putting the variable with more unique levels in the columns allows one to more easily see the differences between changes from left to right, instead of from top to bottom.
 
-3.6.1 Exercise Solutions
-========================
+Chapter 3.6.1 Exercise Solutions
+================================
 
 1.  What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
 
@@ -276,8 +277,8 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     -   The last one was tricky, but I forgot that you could add two geom\_points().
 
-3.7.1 Exercise Solutions
-========================
+Chapter 3.7.1 Exercise Solutions
+================================
 
 1.  What is the default geom associated with stat\_summary()? How could you rewrite the previous plot to use that geom function instead of the stat function?
 
@@ -336,8 +337,8 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
         -   "Geom\_bar() makes the height of the bar proportional to the number of cases in each group.""
     -   Therefore, every group (fair, good, etc., is its own group. So, 100% of the cases are being counted.) For example, for the group "Fair", say there were 35 cases with Fair. The bar plot is plotting 35/35 cases, that is why the proportion is at 100%. By setting the group = 1, it will sum the total of all "Fair", "Good", etc. and divide each individual group by the total.
 
-3.8.1 Exercise Solutions
-========================
+Chapter 3.8.1 Exercise Solutions
+================================
 
 1.  What is the problem with this plot? How could you improve it?
 
@@ -375,6 +376,11 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
+Chapter 3.9.1 Exercise Solutions
+================================
+
+1.  Turn a stacked bar chart into a pie chart using coord\_polar().
+
     ``` r
     bar <- ggplot(data = mpg) + 
       geom_bar(
@@ -395,15 +401,15 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
 
     ![](R_DS_CH1_files/figure-markdown_github/unnamed-chunk-19-2.png)
 
-5.  What does `labs()` do? Read the documentation.
+2.  What does `labs()` do? Read the documentation.
 
     -   It allows one to modify the axis, legend and plot labels within ggplot2
 
-6.  What’s the difference between coord\_quickmap() and coord\_map()?
+3.  What’s the difference between coord\_quickmap() and coord\_map()?
 
     -   Run `?coord_map` to see answer.
 
-7.  What does the plot below tell you about the relationship between city and highway mpg? Why is coord\_fixed() important? What does geom\_abline() do?
+4.  What does the plot below tell you about the relationship between city and highway mpg? Why is coord\_fixed() important? What does geom\_abline() do?
 
     ``` r
     ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
