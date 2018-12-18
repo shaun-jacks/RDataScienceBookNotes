@@ -343,3 +343,7 @@ Why do you think I used it earlier in the chapter?
     + As cty increases, mpg also increases. Coord_fixed "forces a specified ratio between the physical representation of data units on the axes" - `?coord_fixed`
     
     + geom_abline addes a reference line to a plot.
+    
+# Thoughts of Chapter
+
+I thought that this chapter was a very well structured tutorial of how ggplot works. I remember trying to use ggplot for previous data visualization projects, and it was very difficult figuring out how to use it without reading much about it. My main takeaways from this chapter was the aesthetic mappings section, and grouping variables within dataframes by color or by lines. I also enjoyed learning about the statistical transformations, since that used to confuse me in the past. 

@@ -9,6 +9,7 @@ Shaun Jackson
 -   [3.6.1 Exercise Solutions](#exercise-solutions-3)
 -   [3.7.1 Exercise Solutions](#exercise-solutions-4)
 -   [3.8.1 Exercise Solutions](#exercise-solutions-5)
+-   [Thoughts of Chapter](#thoughts-of-chapter)
 
 The below notes are from Hadley Wickham's R for Data Science.
 
@@ -416,3 +417,8 @@ Loading the tidyverse package will provide us with `mpg`, a tibble that will ena
     -   As cty increases, mpg also increases. Coord\_fixed "forces a specified ratio between the physical representation of data units on the axes" - `?coord_fixed`
 
     -   geom\_abline addes a reference line to a plot.
+
+Thoughts of Chapter
+===================
+
+I thought that this chapter was a very well structured tutorial of how ggplot works. I remember trying to use ggplot for previous data visualization projects, and it was very difficult figuring out how to use it without reading much about it. My main takeaways from this chapter was the aesthetic mappings section, and grouping variables within dataframes by color or by lines. I also enjoyed learning about the statistical transformations, since that used to confuse me in the past.
